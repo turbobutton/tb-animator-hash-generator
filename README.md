@@ -6,3 +6,5 @@ Since Animator Controller parameters are string-based, it's far too easy to intr
 
 # The Solution
 Which brings us to the Animator Hash Generator. This tool scrapes the parameters from the given Animator Controllers and generates a script that caches all the strings into convenient, type-safe variables. Additionally, the tool uses Animator.StringToHash() to store the values as integers to help squeeze a little extra performance out of your animation code!
+
+![The basic tool setup](/Images/AnimatorHashGenerator_01.png?raw=true)
