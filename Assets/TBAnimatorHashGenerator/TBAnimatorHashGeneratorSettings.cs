@@ -6,7 +6,7 @@ using UnityEditor.Animations;
 using UnityEditor;
 #endif
 
-namespace TButt
+namespace TButt.Tools
 {
 	public class TBAnimatorHashGeneratorSettings : ScriptableObject
 	{

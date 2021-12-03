@@ -7,16 +7,13 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.VersionControl;
 
-namespace TButt
+namespace TButt.Tools
 {
 	//A tool to generate .cs files with cached Animator hashes
 	public class TBAnimatorHashGenerator : EditorWindow
 	{
-		private static TBAnimatorHashGenerator _Window;
-
-		private static readonly string SETTINGS_PATH = "TBAnimatorHashGenerator/AnimatorHashGeneratorSettings.asset";
-		private static TBAnimatorHashGeneratorSettings _Settings;
-		private static List<TBAnimatorHashGeneratorSettings.Preset> _workingPresetCopies = new List<TBAnimatorHashGeneratorSettings.Preset>();
+		private TBAnimatorHashGeneratorSettings _Settings;
+		private List<TBAnimatorHashGeneratorSettings.Preset> _workingPresetCopies = new List<TBAnimatorHashGeneratorSettings.Preset>();
 
 		private Vector2 _scroll;
 		private Vector2 _presetsScroll;
@@ -27,7 +24,9 @@ namespace TButt
 		private string[] _slotNames;
 		private string _newSlotName;
 
-		private string[] _toolbarLabels = new string[2] { "Settings", "Formatting" };
+		private static readonly string SETTINGS_PATH = "TBAnimatorHashGenerator/AnimatorHashGeneratorSettings.asset";
+
+		private static readonly string[] TOOLBAR_LABELS = new string[2] { "Settings", "Formatting" };
 
 		const string QUOTE = "\"";
 		const string PROGRESS_TITLE = "Generating Animator Hash File...";
@@ -39,14 +38,17 @@ namespace TButt
 		[MenuItem("Tools/Generate Animator Hashes...")]
 		static void Init()
 		{
+			TBAnimatorHashGenerator window = (TBAnimatorHashGenerator)EditorWindow.GetWindow(typeof(TBAnimatorHashGenerator));
+			window.titleContent.text = WINDOW_TITLE;
+
+			window.Show();
+		}
+
+		private void OnEnable()
+		{
 			GenerateHeaderStyles(20);
 			GetOrCreateSettingsFile();
 			LoadData();
-
-			_Window = (TBAnimatorHashGenerator)EditorWindow.GetWindow(typeof(TBAnimatorHashGenerator));
-			_Window.titleContent.text = WINDOW_TITLE;
-
-			_Window.Show();
 		}
 
 		private void OnDisable()
@@ -79,7 +81,7 @@ namespace TButt
 			EditorGUILayout.EndVertical();
 
 			EditorGUILayout.BeginVertical();
-			_toolbar = GUILayout.Toolbar(_toolbar, _toolbarLabels, LAYOUT_HEIGHT_30);
+			_toolbar = GUILayout.Toolbar(_toolbar, TOOLBAR_LABELS, LAYOUT_HEIGHT_30);
 
 			EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
@@ -197,13 +199,9 @@ namespace TButt
 
 			GUI.backgroundColor = defaultColor;
 
-			EditorGUILayout.EndScrollView();
-
-			EditorGUILayout.EndVertical();
+			EditorGUILayout.Space();
 
 			EditorGUILayout.BeginHorizontal();
-
-			//EditorGUILayout.LabelField(NEW_PRESET_LABEL, LAYOUT_WIDTH_100);
 
 			EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(_newSlotName) || string.IsNullOrWhiteSpace(_newSlotName));
 			BeginChangeCheck();
@@ -220,8 +218,11 @@ namespace TButt
 			_newSlotName = EditorGUILayout.TextField(_newSlotName);
 
 			EditorGUILayout.EndHorizontal();
-		}
 
+			EditorGUILayout.EndScrollView();
+
+			EditorGUILayout.EndVertical();
+		}
 
 		private static readonly string SAVING_HEADER = "Saving";
 		private static readonly string SELECT_SAVE_LOCATION_BUTTON_LABEL = "Select Save Location";
@@ -500,7 +501,6 @@ namespace TButt
 			if (GUILayout.Button(GENERATE_FILE_LABEL, LAYOUT_HEIGHT_40))
 			{
 				GenerateFile();
-				SaveData();
 			}
 			EditorGUI.EndDisabledGroup();
 
@@ -524,15 +524,19 @@ namespace TButt
 			GUILayout.Label(headerText, _headerStyles[Mathf.Clamp(size - 1, 0, _headerStylesCount)]);
 		}
 
-		private static int _headerStylesCount;
-		private static GUIStyle[] _headerStyles;
-		static void GenerateHeaderStyles(int count)
+		private int _headerStylesCount;
+		private GUIStyle[] _headerStyles;
+		private GUIStyle _defaultLabelStyle;
+		void GenerateHeaderStyles(int count)
 		{
+			if (_defaultLabelStyle == null)
+				_defaultLabelStyle = EditorStyles.label;
+
 			_headerStylesCount = count;
 			_headerStyles = new GUIStyle[count];
 			for (int i = 0; i < count; i++)
 			{
-				GUIStyle style = new GUIStyle(EditorStyles.label);
+				GUIStyle style = new GUIStyle(_defaultLabelStyle);
 				style.fontStyle = FontStyle.Bold;
 				style.fontSize = i + 1;
 				_headerStyles[i] = style;
@@ -619,7 +623,7 @@ namespace TButt
 			EditorUtility.ClearProgressBar();
 		}
 
-		static void LoadData ()
+		void LoadData ()
 		{
 			int presetsCount = _Settings.Presets.Count;
 			var temp = new TBAnimatorHashGeneratorSettings.Preset[_Settings.Presets.Count];
@@ -633,7 +637,7 @@ namespace TButt
 			_workingPresetCopies = new List<TBAnimatorHashGeneratorSettings.Preset>(temp);
 		}
 
-		private static void GetOrCreateSettingsFile()
+		private void GetOrCreateSettingsFile()
 		{
 			if (_Settings == null)
 			{
