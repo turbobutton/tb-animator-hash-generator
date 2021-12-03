@@ -246,7 +246,7 @@ namespace TButt.Tools
 				//This makes it so the previous save path doesn't get blown out if the user decides to cancel out of the save window.
 				if (!string.IsNullOrEmpty (savePath))
 				{
-					currentSlot.savePath = savePath;
+					currentSlot.savePath = FormatToRelativeFilePath (savePath);
 				}
 
 				if (currentSlot.savePath.Length != 0)
@@ -272,7 +272,7 @@ namespace TButt.Tools
 		private static readonly string ANIMATOR_CONTROLLERS_LABEL = "Animator Controllers";
 		private static readonly GUILayoutOption[] LAYOUT_MAX_WIDTH_220 = new GUILayoutOption[] { GUILayout.MaxWidth(220) };
 		private static readonly string SELECT_CONTAINING_FOLDER_LABEL = "Select Containing Folder";
-		private static readonly string FOLDER_HEADER = "Folder";
+		private static readonly string FOLDER_HEADER = "Containing Folder";
 		private static readonly string TARGET_CONTROLLERS_HEADER = "Target Controllers";
 		void DrawControllerSelectionSection()
 		{
@@ -291,12 +291,13 @@ namespace TButt.Tools
 
 						if (!string.IsNullOrEmpty (targetFolder))
 						{
-							currentPreset.targetFolder = targetFolder;
+							currentPreset.targetFolder = FormatToRelativeFilePath (targetFolder);
 						}
 					}
 
 					EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 					DrawH2(FOLDER_HEADER);
+
 					EditorGUILayout.LabelField(currentPreset.targetFolder);
 					EditorGUILayout.EndVertical();
 					break;
@@ -593,6 +594,23 @@ namespace TButt.Tools
 
 			_hasChanges = hasChanges;
 		}
+
+		string FormatToRelativeFilePath(string rawPath)
+		{
+			string folderPathLabel = rawPath;
+			int assetsIndex = folderPathLabel.IndexOf("Assets");
+
+			return folderPathLabel.Substring(assetsIndex);
+		}
+
+		string FormatToAbsoluteFilePath (string relativePath)
+		{
+			string dataPath = Application.dataPath;
+			int assetsIndex = dataPath.IndexOf("Assets");
+			dataPath = dataPath.Remove(assetsIndex);
+
+			return dataPath + relativePath;
+		}
 		#endregion
 
 		#region FUNCTIONALITY
@@ -679,7 +697,7 @@ namespace TButt.Tools
 
 					string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", "AnimatorController"), new string[] { folder });
 
-					using (FileStream fs = File.Open(currentSlot.savePath, System.IO.FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+					using (FileStream fs = File.Open(FormatToAbsoluteFilePath (currentSlot.savePath), System.IO.FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
 					{
 						using (StreamWriter sw = new StreamWriter(fs))
 						{
@@ -755,7 +773,7 @@ namespace TButt.Tools
 					}
 					break;
 				case TBAnimatorHashGeneratorSettings.Type.ControllersList:
-					using (FileStream fs = File.Open(currentSlot.savePath, System.IO.FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+					using (FileStream fs = File.Open(FormatToAbsoluteFilePath(currentSlot.savePath), System.IO.FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
 					{
 						using (StreamWriter sw = new StreamWriter(fs))
 						{
