@@ -78,7 +78,7 @@ public class MyAnimationClass : MonoBehaviour
 	{
 		_Animator.SetBool (AnimHashIDs.IS_WALKING_BOOL, speed > 0f);
 		_Animator.SetFloat (AnimHashIDs.WALK_SPEED_FLOAT, speed);
-		_Animator.SetInt (AnimHashIDs.WALK_VARIATION, variation);
+		_Animator.SetInt (AnimHashIDs.WALK_VARIATION_INT, variation);
 		
 		_Animator.SetLayerWeight(AnimHashIDs.Layers.LEGS, 1f);
 	}
