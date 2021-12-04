@@ -319,7 +319,10 @@ namespace TButt.Tools
 			Event evt = Event.current;
 
 			Rect dropAreaRect = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
+			Color startColor = GUI.color;
+			GUI.color = Color.white;
 			GUI.Box(dropAreaRect, DROP_CONTROLLERS_HERE);
+			GUI.color = startColor;
 
 			switch (evt.type)
 			{
