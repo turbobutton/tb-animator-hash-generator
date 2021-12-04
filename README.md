@@ -1,7 +1,7 @@
 # TB Animator Hash Generator
-A Unity tool that auto-generates files containing cached type-safe variables for the Animator Controller parameters in your project.
+A Unity tool that auto-generates files containing cached type-safe variables for the Animator Controller parameters in your project. Basically, it prevents you from having to write this sort of boilerplate over and over.
 
-![Toolbar location](/Images/AHG_Boilerplate_Example_01.png?raw=true)
+![Boilerplate Example](/Images/AHG_Boilerplate_Example_01.png?raw=true)
 
 ## The Problem
 Since Animator Controller parameters are string-based, it's really easy to introduce typos into your code. It can cost hours of bug hunting when an animation isn't playing the way it should, only to discover that the string in your code doesn't match the name of the Animator Controller parameter. We've all been there...
@@ -10,18 +10,13 @@ Since Animator Controller parameters are string-based, it's really easy to intro
 Which brings us to the Animator Hash Generator. This tool scrapes the parameters from the given Animator Controllers and generates a script that caches all the strings into convenient, type-safe variables. Additionally, the tool uses Animator.StringToHash() to store the values as integers to help squeeze a little extra performance out of your animation code.
 
 # How To
-Go to Tools > Generate Animator Hashes...
+To open the Animator Hash Generator, go to Tools > Generate Animator Hashes...
 
 ![Toolbar location](/Images/AHG_Instructions_01.png?raw=true)
 
-A window will open that looks something like this:
+A window will open that looks like this:
 
 ![Overview image of the tool](/Images/AHG_Instructions_02.png?raw=true)
-
-## Presets
-In the left hand column is a list of presets. You can add or remove presets as needed. This allows you to easily create different settings and save locations for different groups of Animator Controllers in your project.
-
-![Closeup of presets section](/Images/AHG_Instructions_Presets_01.png?raw=true)
 
 ## Settings Section
 
@@ -48,6 +43,11 @@ The Formatting section contains various options for controlling the formatting o
 **NOTE:** In order for the formatting to be properly applied to the variable names, it is assumed that your Animator Controller properties use camel case and your layers use spaces (following the formatting of the built-in "Base Layer").
 
 ![Formatting tab](/Images/AHG_Instructions_Formatting_01.png?raw=true)
+
+## Presets
+In the left hand column is a list of presets. You can add or remove presets as needed. This allows you to easily create different settings and save locations for different groups of Animator Controllers in your project.
+
+![Closeup of presets section](/Images/AHG_Instructions_Presets_01.png?raw=true)
 
 # Using the Code
 Once you generate a file, the class will look something like this (depending on your formatting settings):
