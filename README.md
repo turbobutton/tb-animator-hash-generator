@@ -1,8 +1,10 @@
 # TB Animator Hash Generator
-A Unity tool that auto-generates hashed versions of the Animator Controller parameters in your project.
+A Unity tool that auto-generates files containing cached type-safe variables for the Animator Controller parameters in your project.
+
+![Toolbar location](/Images/AHG_Boilerplate_Example_01.png?raw=true)
 
 ## The Problem
-Since Animator Controller parameters are string-based, it's far too easy to introduce typos into your code. It can potentially cost hours of bug hunting when an animation isn't playing the way it should, only to discover that the string in your code doesn't match the name of the Animator Controller parameter. We've all been there...
+Since Animator Controller parameters are string-based, it's really easy to introduce typos into your code. It can cost hours of bug hunting when an animation isn't playing the way it should, only to discover that the string in your code doesn't match the name of the Animator Controller parameter. We've all been there...
 
 ## The Solution
 Which brings us to the Animator Hash Generator. This tool scrapes the parameters from the given Animator Controllers and generates a script that caches all the strings into convenient, type-safe variables. Additionally, the tool uses Animator.StringToHash() to store the values as integers to help squeeze a little extra performance out of your animation code.
@@ -78,7 +80,7 @@ public class MyAnimationClass : MonoBehaviour
 	{
 		_Animator.SetBool (AnimHashIDs.IS_WALKING_BOOL, speed > 0f);
 		_Animator.SetFloat (AnimHashIDs.WALK_SPEED_FLOAT, speed);
-		_Animator.SetInt (AnimHashIDs.WALK_VARIATION, variation);
+		_Animator.SetInt (AnimHashIDs.WALK_VARIATION_INT, variation);
 		
 		_Animator.SetLayerWeight(AnimHashIDs.Layers.LEGS, 1f);
 	}
