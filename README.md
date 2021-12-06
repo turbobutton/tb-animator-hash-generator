@@ -1,5 +1,5 @@
 # TB Animator Hash Generator
-A Unity tool that auto-generates files containing cached type-safe variables for the Animator Controller parameters in your project. Basically, it prevents you from having to write this sort of boilerplate over and over.
+A Unity tool that auto-generates files containing cached, type-safe variables for the Animator Controller parameters in your project. Basically, it prevents you from having to write this sort of boilerplate over and over.
 
 ![Boilerplate Example](/Images/AHG_Boilerplate_Example_01.png?raw=true)
 
