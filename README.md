@@ -86,3 +86,7 @@ public class MyAnimationClass : MonoBehaviour
 	}
 }
 ~~~~
+
+# FAQ
+### What if I have Animator Controllers with parameters that have the same name?
+> The system will detect any duplicates and only generate a hash variable for the first parameter with a given name.
