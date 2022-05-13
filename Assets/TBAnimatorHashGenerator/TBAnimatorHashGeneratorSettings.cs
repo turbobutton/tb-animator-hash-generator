@@ -46,7 +46,9 @@ namespace TButt.Tools
 				savePath = presetToCopy.savePath;
 				className = presetToCopy.className;
 				type = presetToCopy.type;
+#if UNITY_EDITOR
 				targetControllers = new List<AnimatorController> (presetToCopy.targetControllers);
+#endif
 				targetFolder = presetToCopy.targetFolder;
 
 				variableNameFormatting = presetToCopy.variableNameFormatting;
@@ -67,7 +69,9 @@ namespace TButt.Tools
 				savePath = presetToCopy.savePath;
 				className = presetToCopy.className;
 				type = presetToCopy.type;
+#if UNITY_EDITOR
 				targetControllers = new List<AnimatorController>(presetToCopy.targetControllers);
+#endif
 				targetFolder = presetToCopy.targetFolder;
 
 				variableNameFormatting = presetToCopy.variableNameFormatting;

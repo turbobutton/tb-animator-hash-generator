@@ -745,11 +745,13 @@ namespace TButt.Tools
 
 									EditorUtility.DisplayProgressBar(PROGRESS_TITLE, string.Format("Generating layer hashes for {0}", a.name), (float)i / guids.Length);
 
+									//If the animator has only one layer and that layer is the Base Layer, skip it b/c the layer for this
+									//object will never need to be referenced in code.
 									if (a.layers.Length == 1 && layerNames.Contains("Base Layer"))
 										continue;
 
-									sw.WriteLine("\t\t//" + a.name);
-
+									//Writes the animator controller name as a comment in the file
+									
 									for (int j = 0; j < a.layers.Length; j++)
 									{
 										string layerName = a.layers[j].name;
@@ -760,12 +762,10 @@ namespace TButt.Tools
 										layerNames.Add(layerName);
 										sw.WriteLine(ConstructLayerLine(a.layers[j], j));
 									}
-
-									sw.Write("\n");
 								}
 
 								EditorUtility.ClearProgressBar();
-
+								
 								sw.WriteLine("\t}");
 							}
 							sw.WriteLine("}");
@@ -806,6 +806,8 @@ namespace TButt.Tools
 								}
 							}
 							
+							sw.Write("\n");
+
 							EditorUtility.ClearProgressBar();
 
 							if (currentSlot.includeLayers)
@@ -816,7 +818,9 @@ namespace TButt.Tools
 								for (int i = 0; i < targetControllersCount; i++)
 								{
 									AnimatorController a = currentSlot.targetControllers[i];
-									sw.WriteLine("\t\t//" + a.name);
+									
+									//Writes the animator controller as a comment in the file.
+									//sw.WriteLine("\t\t//" + a.name);
 
 									for (int j = 0; j < a.layers.Length; j++)
 									{
@@ -834,11 +838,9 @@ namespace TButt.Tools
 
 								EditorUtility.ClearProgressBar();
 
-								sw.Write("\n");
-
 								sw.WriteLine("\t}");
 
-								sw.Write("\n");
+								
 							}
 							sw.WriteLine("}");
 
@@ -1005,7 +1007,7 @@ namespace TButt.Tools
 			}
 
 			string tabs = includeTabs ? "\t\t" : string.Empty;
-			string finalString = string.Format("{0}public static readonly int {1} = {2};", tabs, variableName, index);
+			string finalString = string.Format("{0}public static readonly string {1} = \"{2}\";", tabs, variableName, layerName);
 			return finalString;
 		}
 
