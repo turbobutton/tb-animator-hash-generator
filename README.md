@@ -63,9 +63,9 @@ public static class AnimHashIDs
 	public static class Layers
 	{
 		//TestController_01
-		public static readonly int BASE_LAYER = 0;
-		public static readonly int LEGS = 1;
-		public static readonly int TORSO = 2;
+		public static readonly string BASE_LAYER = "Base Layer";
+		public static readonly string LEGS = "Legs";
+		public static readonly string TORSO = "Torso";
 	}
 }
 ~~~~
@@ -74,7 +74,15 @@ Then in your animation code you can reference these variables easily like so:
 ~~~~
 public class MyAnimationClass : MonoBehaviour
 {
+	[SerializeField]
 	private Animator _Animator;
+	
+	private int _legsLayerID;
+	
+	void Awake ()
+	{
+		_legsLayerID = _Animator.GetLayerIndex (AnimHashIDs.Layers.LEGS);
+	}
 	
 	public void Walk (float speed, int variation)
 	{
@@ -82,7 +90,7 @@ public class MyAnimationClass : MonoBehaviour
 		_Animator.SetFloat (AnimHashIDs.WALK_SPEED_FLOAT, speed);
 		_Animator.SetInt (AnimHashIDs.WALK_VARIATION_INT, variation);
 		
-		_Animator.SetLayerWeight(AnimHashIDs.Layers.LEGS, 1f);
+		_Animator.SetLayerWeight(_legsLayerID, 1f);
 	}
 }
 ~~~~
